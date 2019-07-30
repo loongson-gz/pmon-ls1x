@@ -117,7 +117,7 @@ option		NOSNOOP			# Caches are no-snooping
 #
 option		HAVE_TOD		# Time-Of-Day clock
 option		HAVE_NVENV		#  Platform has non-volatile env mem
-#option		HAVE_LOGO		# Output splash logo
+option		HAVE_LOGO		# Output splash logo
 #option		USE_SUPERIO_UART
 #option		USE_LEGACY_RTC
 #option		GODSONEV2A
@@ -249,6 +249,7 @@ option		wait_key
 #option		BUZZER				#蜂鸣器
 #option		FAST_STARTUP		#快速启动
 option		CONFIG_CHINESE
+option		SBD_DEBUG		#开启调试打印	
 
 #用于启动时执行一次nand和内存测试
 #option		BOOT_TEST_NAND_MEM

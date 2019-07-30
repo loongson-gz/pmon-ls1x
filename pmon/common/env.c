@@ -71,7 +71,8 @@ static struct stdenv {
 #if NCMD_MORE > 0
     {"moresz", "10", 0, chg_moresz},
 #endif
-    {"prompt", "PMON> ", 0},
+    //{"prompt", "PMON> ", 0},
+    {"prompt", "LSSH> ", 0},
     {"regstyle", "sw", "hw sw"},
 #ifdef HAVE_QUAD
     {"regsize", "32", "32 64"},

@@ -72,6 +72,9 @@
 #include "mod_vgacon.h"
 #include "mod_framebuffer.h"
 
+
+//#define DEBUG_WHERE printf("file:%s %s:%d\n",__FILE__, __FUNCTION__, __LINE__); 
+
 #if (NMOD_X86EMU_INT10 > 0)||(NMOD_X86EMU >0)
 extern int vga_bios_init(void);
 #endif
@@ -188,10 +191,12 @@ unsigned int output_mode = 1;
 
 void initmips(unsigned int memsz)
 {
+	SBD_DISPLAY("INIT", 0);
 	/*
 	 *	Set up memory address decoders to map entire memory.
 	 *	But first move away bootrom map to high memory.
 	 */
+
 	memorysize = memsz > 256 ? 256 << 20 : memsz << 20;
 	memorysize_high = memsz > 256 ? (memsz - 256) << 20 : 0;
 
@@ -288,6 +293,7 @@ void initmips(unsigned int memsz)
 	*(volatile int*)0xbfd010d0 &= ~(1<<0);
 	*(volatile int*)0xbfd010f0 |= 1<<0;
 #endif
+	DEBUG_WHERE;
 
 	/*
 	 * Launch!
@@ -460,6 +466,7 @@ void tgt_cmd_vers(void)
  */
 void tgt_logo(void)
 {
+#ifdef PMON_LOGO
     printf("\n");
     printf("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[\n");
     printf("[[[            [[[[   [[[[[[[[[[   [[[[            [[[[   [[[[[[[  [[\n");
@@ -472,12 +479,24 @@ void tgt_logo(void)
     printf("[[  [[[[[[[[[[[[[[[  [[[[[[[[[[[[  [[[  [[[[[[[[[[  [[[  [[[[[[    [[\n");
     printf("[[  [[[[[[[[[[[[[[[  [[[[[[[[[[[[  [[[   [[[[[[[[   [[[  [[[[[[[   [[\n");
     printf("[[  [[[[[[[[[[[[[[[  [[[[[[[[[[[[  [[[[            [[[[  [[[[[[[[  [[\n");
-    printf("[[[[[[[2005][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[\n"); 
+    printf("[[[[[[[[[[[[[[[[[[[[[Loongson(GD) 2019][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[\n"); 
+#else
+	printf("\n");
+	printf("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[\n");
+	printf("[[  [[[[[[[[[       [[[[[       [[[[   [[[[[  [[[[[      [[[[[       [[[[[       [[[[   [[[[[  [[\n");
+	printf("[[  [[[[[[[[   [[[[  [[[   [[[[  [[[    [[[[  [[[[  [[[[  [[[   [[[[  [[[   [[[[  [[[    [[[[  [[\n");
+	printf("[[  [[[[[[[[  [[[[[[ [[[  [[[[[[ [[[  [  [[[  [[[  [[[[[[[[[[[[   [[[[[[[  [[[[[[ [[[  [  [[[  [[\n");
+	printf("[[  [[[[[[[[  [[[[[[ [[[  [[[[[[ [[[  [[  [[  [[[  [[[    [[[[[[[    [[[[  [[[[[[ [[[  [[  [[  [[\n");
+	printf("[[  [[[[[[[[  [[[[[[ [[[  [[[[[[ [[[  [[[  [  [[[  [[[[[  [[[[[[[[[[  [[[  [[[[[[ [[[  [[[  [  [[\n");
+	printf("[[  [[[[[[[[   [[[[  [[[   [[[[  [[[  [[[[    [[[   [[[[  [[[   [[[  [[[[   [[[[  [[[  [[[[    [[\n");
+	printf("[[       [[[[       [[[[[       [[[[  [[[[[   [[[[       [[[[[      [[[[[[       [[[[  [[[[[   [[\n");
+	printf("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[2019 Loongson(GD)][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[\n");   
+#endif
 }
 
 void init_legacy_rtc(void)
 {
-	int year, month, date, hour, min, sec;
+	int year, month, date, hour, min, sec; 
 	unsigned int v;
 
 	outl(REG_CNTRCTL,0x2d00);
@@ -701,8 +720,9 @@ void tgt_memprint(void)
 
 void tgt_machprint(void)
 {
+	DEBUG_WHERE
 	printf("Copyright 2000-2002, Opsycon AB, Sweden.\n");
-	printf("Copyright 2005, ICT CAS.\n");
+	printf("Copyright 2019, ICT CAS.\n");
 	printf("CPU %s @", md_cpuname());
 } 
 

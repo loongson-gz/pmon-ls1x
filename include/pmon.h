@@ -100,6 +100,9 @@
 
 #define CNTRL(x) (x & 0x1f)
 
+#define DEBUG_WHERE printf("file:%s %s:%d\n",__FILE__, __FUNCTION__, __LINE__); 
+//#define DEBUG_WHERE do{}while; 
+
 typedef int     Func __P((void));
 
 typedef struct Demo {

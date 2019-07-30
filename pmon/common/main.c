@@ -66,6 +66,9 @@
 #include <pflash.h>
 #include <flash.h>
 
+//#define DEBUG_WHERE printf("file:%s %s:%d\n",__FILE__, __FUNCTION__, __LINE__); 
+
+
 extern void    *callvec;
 unsigned int show_menu;
 
@@ -639,16 +642,19 @@ extern unsigned long GPU_fbaddr;
  */
 void dbginit(char *adr)
 {
+	//DEBUG_WHERE;
 	int	memsize, freq;
 	char	fs[10], *fp;
 
 /*	splhigh();*/
 
+	
 	memsize = memorysize;
 
 	__init();	/* Do all constructor initialisation */
 
 #if NNAND
+	DEBUG_WHERE
 	ls1x_nand_init();
 #endif
 
@@ -708,8 +714,10 @@ void dbginit(char *adr)
 #else
 //	printf ("PMON2000 Professional"); 
 #endif
+	printf ("main.c dbginit .....\n");
 	printf ("\nConfiguration [%s,%s", TARGETNAME,
 			BYTE_ORDER == BIG_ENDIAN ? "EB" : "EL");
+	DEBUG_WHERE;
 #ifdef INET
 	printf (",NET");
 #endif
@@ -723,6 +731,8 @@ void dbginit(char *adr)
 	printf ("Supported loaders [%s]\n", getExecString());
 	printf ("Supported filesystems [%s]\n", getFSString());
 	printf ("This software may be redistributed under the BSD copyright.\n");
+	
+	DEBUG_WHERE
 
 	tgt_machprint();
 
@@ -744,6 +754,7 @@ void dbginit(char *adr)
 	fp[0] = '.';
 	printf (" / Bus @ %s MHz\n", fs);
 
+	DEBUG_WHERE
 	printf ("Memory size %3d MB (%3d MB Low memory, %3d MB High memory) .\n", (memsize+memorysize_high)>>20,
 		(memsize>>20), (memorysize_high>>20));
 
@@ -753,6 +764,8 @@ void dbginit(char *adr)
 #endif
 
 	printf ("\n");
+	
+	DEBUG_WHERE
 
 	md_clreg(NULL);
 	md_setpc(NULL, (int32_t) CLIENTPC);
